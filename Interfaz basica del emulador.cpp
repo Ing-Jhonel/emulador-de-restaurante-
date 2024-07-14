@@ -1,41 +1,12 @@
 #include <iostream>
 #include <windows.h>
 #include <locale.h> //libreria para incluir el idioma español
+#define color SetConsoleTextAttribute
 
 using namespace std;
 
-
-namespace Console {
-    enum Color {
-        BLACK = 0,
-        BLUE = 1,
-        GREEN = 2,
-        CYAN = 3,
-        RED = 4,
-        MAGENTA = 5,
-        BROWN = 6,
-        LIGHTGRAY = 7,
-        DARKGRAY = 8,
-        LIGHTBLUE = 9,
-        LIGHTGREEN = 10,
-        LIGHTCYAN = 11,
-        LIGHTRED = 12,
-        LIGHTMAGENTA = 13,
-        YELLOW = 14,
-        WHITE = 15
-    };
-
-    void setColor(Color textColor, Color bgColor) {
-        HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-        SetConsoleTextAttribute(hConsole, (bgColor << 4) | textColor);
-    }
-
-    void resetColor() {
-        setColor(LIGHTGRAY, BLACK);
-    }
-}
-
-
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	
 // Función para obtener el ancho de la consola
 int anchoConsola() {
     CONSOLE_SCREEN_BUFFER_INFO csbi; //declara variable de tipo CONSOLE_SCREEN_BUFFER_INFO (es una estructura definida en la libreria windows.h)
@@ -69,13 +40,9 @@ void centrar(const string& text) {
     for (int i = 0; i < espaciado; ++i) {
         cout << " ";
     }
-
     // Imprimir el texto
     cout << text;
     
-    for (int i = 0; i < espaciado; ++i) {
-        cout << " ";
-    }
 }
 
 void centrarCin(int tamanotexto){
@@ -97,7 +64,7 @@ void separador(char c){
 	}
 }
 
-void jaulaCentrada(string text, char c){
+void enjaular(string text, char c){
 	
 	int tamanotexto = text.length();
 	int anchojaula = tamanotexto+4;
@@ -111,19 +78,13 @@ void jaulaCentrada(string text, char c){
 	for(int i=0; i<anchojaula; i++){
 		cout << c;
 	}
-	for(int i=0; i<espaciado; i++){
-		cout << " ";
-	}
 	cout << endl;
+	
 	for(int i=0; i<espaciado; i++){
 		cout << " ";
 	}
 	
 	cout << c << " " << text << " " << c;
-	
-	for(int i=0; i<espaciado; i++){
-		cout << " ";
-	}
 	cout << endl;
 	
 	for(int i=0; i<espaciado; i++){
@@ -132,12 +93,10 @@ void jaulaCentrada(string text, char c){
 	for(int i=0; i<anchojaula; i++){
 		cout << c;
 	}
-	for(int i=0; i<espaciado; i++){
-		cout << " ";
-	}
+
 }
 
-void subrayado(string text, char c){
+void subrayar(string text, char c){
 	
 	cout << endl;
 	
@@ -150,41 +109,37 @@ void subrayado(string text, char c){
 	for(int i=0; i<tamanotexto; i++){
 		cout << c;
 	}
-	
-	for(int i=0; i<espaciado; i++){
-		cout << " ";
-	}
+
 }
 
 int main(){
 	
 	system("pause");
-	
-	using namespace Console;
 
 	setlocale(LC_ALL, ""); //parte de la liberia locale.h
 	string texto;
 	char s;
 	int modalidad;
 	do{
-		setColor(WHITE, RED);
+		color(hConsole, 79);
+		cout << endl;
 		s= '*';
 		separador(s);
 		texto = "ESIS'S RESTAURANT";
 		centrar(texto);
 		s = '*';
-		separador(s); cout << endl << endl;
-		resetColor();
+		separador(s); cout << endl;
 		
-		setColor(BLACK, YELLOW);
+		color(hConsole, 224);
+		cout << endl << endl;
 		texto = "Elije el modo de juego";
 		s = '*';
-		jaulaCentrada(texto, s); cout << endl << endl;
+		enjaular(texto, s); cout << endl << endl;
 		
 		texto = "Quiero ser el:";
 		centrar(texto);
 		s= '=';
-		subrayado(texto, s); cout << endl << endl;
+		subrayar(texto, s); cout << endl << endl;
 		
 		texto = "1. DUEÑO";
 		centrar(texto); cout << endl << endl;
@@ -199,7 +154,30 @@ int main(){
 		centrar(texto); cout << endl;
 		centrarCin(1);
 		cin >> modalidad;
-		resetColor();
+		
+		char opcion;
+		switch(modalidad){
+			case 1:
+				texto = "¡AHORA ERES EL DUEÑO DEL RESTAURANTE!";
+				s= '*';
+				enjaular(texto, s); cout << endl << endl;
+				texto = "¿Que quieres hacer?";
+				centrar(texto); cout << endl << endl;
+				do{
+					texto = "A) Administrar cocina";
+					centrar(texto); cout << endl << endl;
+					cin >> opcion;
+				} while(opcion == 'E');
+				break;
+				
+			case '2':
+				break;
+			case '3':
+				break;
+			Default:
+				cout << "Indique el numero de las modalidades disponibles.";
+				break;
+		}
 
 	} while (modalidad != 4);
 	return 0;
