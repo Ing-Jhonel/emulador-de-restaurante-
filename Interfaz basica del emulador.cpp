@@ -30,6 +30,14 @@ int anchoConsola() {
     return columnas;
 }
 
+struct PlatosDeComida{
+	string nombre;
+	string ingredientes;
+	float precio;
+	float costo;
+	int cantidad;
+};
+
 void imprimirEspacio(int n){
 	for(int i=0; i<n; i++){
 		cout << " ";
@@ -172,13 +180,17 @@ void contenidoJaula(string text, int n, char s, int salto){
 	}
 }
 
-struct PlatosDeComida{
-	string nombre;
-	string ingredientes;
-	float precio;
-	float costo;
-	int cantidad;
-};
+void eliminarComida(PlatosDeComida arr[], int &n, int indice){
+	if(indice>=0 && indice<n){
+		for(int i=indice; i<n-1; i++){
+			arr[i]=arr[i+1];
+		}
+		n--;
+	} else {
+		cout << "Indice no valido" << endl;
+	}
+}
+
 int main(){
 	
 	system("pause");
@@ -286,9 +298,26 @@ int main(){
 								int n=0;
 								switch(opcion){
 									case 'a':
-										cout << "\t\t\t\t\t\t Nombre: ";
-										getline(cin, comida[n].nombre);
-										cout << "\t\t\t\t\t\t ";
+										if(n<=100){
+											cout << "\t\t\t\t\t\tNombre: ";
+											if(n>=0) cin.ignore();
+											getline(cin, comida[n].nombre);
+											cout << "\t\t\t\t\t\tIngredientes: ";
+											getline(cin, comida[n].ingredientes);
+											cout << "\t\t\t\t\t\tPrecio: ";
+											cin >> comida[n].precio;
+											cout << "\t\t\t\t\t\tCosto: ";
+											cin >> comida[n].costo;
+											cout << "\t\t\t\t\t\tCantidad: ";
+											cin >> comida[n].cantidad;
+										} else {
+											cout << "Se introdujo el maximo de platos posibles." << endl;
+										}
+										break;
+									case 'b':
+										if(n==0){
+											
+										}
 										break;
 								}
 							} while(opcion!='e');
@@ -316,4 +345,3 @@ int main(){
 	} while (modalidad != 4);
 	return 0;
 }
-
