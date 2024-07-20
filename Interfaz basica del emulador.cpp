@@ -38,6 +38,7 @@ struct PlatosDeComida{
 	int cantidad;
 };
 
+// Funcion para imprimir un espacio entre el lado izquierdo de la pantalla hasta donde se indique
 void imprimirEspacio(int n){
 	for(int i=0; i<n; i++){
 		cout << " ";
@@ -57,6 +58,7 @@ void centrar(const string& text) {
     
 }
 
+// Funcion para centrar una entrada "cin"
 void centrarCin(int tamanotexto){
 
     int tamanoconsola = anchoConsola(); // ya que hallamos columnas con la funcion, le asignamos una variable al retorno
@@ -65,6 +67,7 @@ void centrarCin(int tamanotexto){
     imprimirEspacio(espaciado);
 }
 
+// Funcion para generar una linea larga entre ambos extremos de la pantalla, ideal para separar secciones
 void separador(char c){
 	int tamanoconsola = anchoConsola();
 	cout << endl;
@@ -73,6 +76,7 @@ void separador(char c){
 	}
 }
 
+// Funcion para enjaular un texto (genera un marco alrededor de el), solo una linea de texto, no varias
 void enjaular(string text, char c){
 	
 	int tamanotexto = text.length();
@@ -100,6 +104,7 @@ void enjaular(string text, char c){
 
 }
 
+// Funcion para subrayar un texto
 void subrayar(string text, char c){
 	
 	cout << endl;
@@ -116,6 +121,7 @@ void subrayar(string text, char c){
 
 }
 
+// Funcion para generar una linea de un tamaño, si hay un "salto" de linea, generara entre ambos extremos de la linea un caracter mas, para generar una jaula en ese caso
 void linea(int n, char s, int salto){
 	int tamanoconsola = anchoConsola();
 	int espaciado = (tamanoconsola - n)/2;
@@ -126,7 +132,9 @@ void linea(int n, char s, int salto){
 		cout << s;
 	}
 	
-	 if(salto>0){
+	// ej:   ******************	 ; salto = 0
+	// 		 *				  *  ; salto = 1
+	if(salto>0){
 		cout << endl;
 		
 		imprimirEspacio(espaciado);
@@ -140,6 +148,7 @@ void linea(int n, char s, int salto){
 	} 
 }
 
+// Funcion para generar el contenido de una jaula, esto funcion se complementa con la funcion "linea"
 void contenidoJaula(string text, int n, char s, int salto){
 	int tamanoconsola = anchoConsola();
 	int espaciado = (tamanoconsola - n)/2;
@@ -163,7 +172,8 @@ void contenidoJaula(string text, int n, char s, int salto){
 	
 	imprimirEspacio(espaciado);
 	
-	if(salto!=0){
+	// *	texto	*
+	if(salto>0){
 		for(int i=0; i<salto; i++){
 			cout << endl;
 			
@@ -172,14 +182,17 @@ void contenidoJaula(string text, int n, char s, int salto){
 			cout << s;
 			
 			int espaciojaula=n-2;
-			
 			imprimirEspacio(espaciojaula);
 			
 			cout << s;
 		}
+		// *	texto	* ; salto = 0
+		// *			* ; salto = 1
 	}
+	
 }
 
+// Funcion para eliminar una comida
 void eliminarComida(PlatosDeComida arr[], int &n, int indice){
 	if(indice>=0 && indice<n){
 		for(int i=indice; i<n-1; i++){
@@ -191,6 +204,22 @@ void eliminarComida(PlatosDeComida arr[], int &n, int indice){
 	}
 }
 
+// Funcion para enlinear un texto en el centro de la pantalla
+// ej: 		*********** text ************
+void enlinear(string texto, char s){
+	int tamanoconsola = anchoConsola();
+	int tamanotexto = texto.length();
+	int tamanolinea = (tamanoconsola - tamanotexto)/2;
+	
+	for(int i=0; i<tamanolinea; i++){
+		cout << s;
+	}
+	cout << " " << texto << " ";
+	
+	for(int i=1; i<tamanolinea; i++){
+		cout << s;
+	}
+}
 int main(){
 	
 	system("pause");
@@ -268,8 +297,11 @@ int main(){
 					
 					switch (opcion){
 						case 'A':
+							s = '-';
+							separador(s);
 							texto = "Entrando a la cocina...";
-							centrar(texto); cout << endl << endl;
+							enlinear(texto, s);
+							separador(s); cout << endl << endl;
 							texto = "Indique la accion que va a realizar";
 							centrar(texto);
 							s= '=';
@@ -294,6 +326,7 @@ int main(){
 								centrar(texto); cout << endl;
 								centrarCin(1);
 								cin >> opcion;
+								cout << endl;
 								
 								int n=0;
 								switch(opcion){
@@ -313,6 +346,7 @@ int main(){
 										} else {
 											cout << "Se introdujo el maximo de platos posibles." << endl;
 										}
+										cout << endl;
 										break;
 									case 'b':
 										if(n==0){
